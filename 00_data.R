@@ -1,6 +1,8 @@
 library(sas7bdat)
-#x0<-read.sas7bdat("h18cogmode_20220506.sas7bdat")
 x<-read.sas7bdat("h18cogmode_20220613.sas7bdat")
+
+#x<-read.sas7bdat("hrscogmode_20220914.sas7bdat") #this is just for creating the phone/f2f comparison
+
 
 ##adding numeracy: Numeracy is alt-wave. So 2014 & 2018 (O & Q). Pay attention to "OD180S" "QD180S" "OD180M" "QD180M"
 x$RD180S<-NA
@@ -68,28 +70,19 @@ df$iwmode<-mod[df$iwmode]
 ## 3. WEB
 ## 4. WEB-SMALL
 mod<-c("tel","f2f","web","webS")
-df$mode<-ifelse(df$wave=="Q",df$qdmode,NA)
-df$mode<-ifelse(df$wave=="R",df$rdmode,df$mode)
-df$mode<-mod[df$qdmode]
+df$qdmode<-mod[df$qdmode]
+df$rdmode<-mod[df$rdmode]
+#df$mode<-ifelse(df$wave=="Q",df$qdmode,NA)
+#df$mode<-ifelse(df$wave=="R",df$rdmode,df$mode)
+#df$mode<-mod[df$qdmode]
 ##
-df$mode<-df$mode<-ifelse(df$wave %in% c("Q","R"),df$mode,df$iwmode)
+#df$mode<-df$mode<-ifelse(df$wave %in% c("Q","R"),df$mode,df$iwmode)
 
 
-##add pattern
-L<-split(df,df$hhidpn)
-f<-function(x) {
-    x<-x[x$year %in% c(2014,2016,2018),]
-    x<-x[order(x$year),]
-    pat<-paste(x$mode,collapse=' ')
-    c(unique(x$hhidpn),pat,nrow(x))
-}
-pat<-lapply(L,f)
-pat<-data.frame(do.call("rbind",pat))
-names(pat)<-c("hhidpn","pat","npat")
-df<-merge(df,pat,all.x=TRUE)
 
 
 save(df,file="/home/bd/Dropbox/projects/hrs/web/data/df.Rdata")
 
+#save(df,file="/home/bd/Dropbox/projects/hrs/web/data/df_phonef2f.Rdata")  #hrscogmode_20220914.sas7bdat
 
 
