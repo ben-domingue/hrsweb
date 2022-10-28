@@ -1,8 +1,6 @@
 library(sas7bdat)
-x<-read.sas7bdat("h18cogmode_20220613.sas7bdat")
-
-#x<-read.sas7bdat("hrscogmode_20220914.sas7bdat") #this is just for creating the phone/f2f comparison
-
+#x0<-read.sas7bdat("h18cogmode_20220613.sas7bdat")
+x<-read.sas7bdat("h18cogmode_20221003.sas7bdat")
 
 ##adding numeracy: Numeracy is alt-wave. So 2014 & 2018 (O & Q). Pay attention to "OD180S" "QD180S" "OD180M" "QD180M"
 x$RD180S<-NA
@@ -37,7 +35,9 @@ for (l in waves) {
 tab<-table(unlist(nms))
 vars<-names(tab[tab==6])
 
-keep<-c("HHID","PN","BIRTHYR","DEGREE","GENDER","HISPANIC","RACE","QWEBCONTROL","QPROXY","QDMODE","EFTFASSIGN","RDMODE")
+#######################
+
+keep<-c("HHID","PN","BIRTHYR","DEGREE","GENDER","HISPANIC","RACE","QWEBCONTROL","QPROXY","QDMODE","EFTFASSIGN","RDMODE","COGTOT27_IMP2018")
 L<-list()
 for (l in waves) {
     vars0<-vars

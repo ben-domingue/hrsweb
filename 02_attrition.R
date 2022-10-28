@@ -49,13 +49,18 @@ dim(df)
 df$female<-ifelse(df$gender==2,1,0)
 df$partner<-ifelse(df$r14mstat %in% c(1:3),1,0)
 
+df$modemode<-ifelse(df$qwebcontrol==2,'phone','web')
+df$modemode<-ifelse(df$attrit==0 & df$qwebcontrol==1,'complier',df$modemode)
+df$modemode<-ifelse(df$attrit==1 & df$qwebcontrol==1,'non-complier',df$modemode)
+df$modemode<-factor(df$modemode,ordered=TRUE,levels=c("phone","complier","non-complier"))
+
 L<-list()
 f<-function(nm,df) {
     x<-df[!is.na(df[[nm]]),]
     z<-x[[nm]]
     M<-mean(z,na.rm=TRUE)
     x[[nm]]<-(z-mean(z))/sd(z)
-    c(nrow(x),M,by(x[[nm]],x$attrit,mean,na.rm=TRUE))
+    c(nrow(x),M,by(x[[nm]],x$modemode,mean,na.rm=TRUE))
     }
 L$age<-f('age',df)
 L$female<-f('female',df)
