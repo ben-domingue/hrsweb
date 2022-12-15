@@ -14,6 +14,11 @@ nms<-c("dlrc1", "dlrc2", "dlrc3", "dlrc4", "imrc1", "imrc2", "imrc3", "imrc4", "
 #df<-df[df$focal==1,]
 df<-df[df$qdmode %in% c("tel","web"),]
 
+##no attriters
+df$attrit<-ifelse(df$qwebcontrol==1 & !(df$qdmode %in% c("web","webS")),1,0)
+df<-df[df$attrit==0,]
+##
+
 df<-merge(df,x0)
 dim(df)
 

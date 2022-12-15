@@ -60,7 +60,11 @@ f<-function(nm,df) {
     z<-x[[nm]]
     M<-mean(z,na.rm=TRUE)
     x[[nm]]<-(z-mean(z))/sd(z)
-    c(nrow(x),M,by(x[[nm]],x$modemode,mean,na.rm=TRUE))
+    ##z test
+    zz<-x[x$modemode!="phone",]
+    pv<-t.test(zz[[nm]][zz$modemode=="complier"],zz[[nm]][zz$modemode=="non-complier"])$p.value
+    ##
+    c(nrow(x),M,by(x[[nm]],x$modemode,mean,na.rm=TRUE),pv)
     }
 L$age<-f('age',df)
 L$female<-f('female',df)
@@ -71,8 +75,9 @@ L$r14conde<-f('r14conde',df)
 L$partner<-f('partner',df)
 tab<-do.call("rbind",L)
 library(xtable)
-xtable(tab)
-
+#xtable(tab,)
+print(xtable(tab,digits=2,display=c("f","d","f","f","f","f","e")))
+            
 #############################################################################
 
 library(splines)

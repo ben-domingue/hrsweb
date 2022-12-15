@@ -19,6 +19,10 @@ df<-df[df$hhidpn %in% ids,]
 df<-df[df$wave=="Q" & df$qwebcontrol %in% 1:2,]
 df<-df[df$iwtype==1 & df$proxy==5,]
 df<-df[df$qdmode %in% c("tel","web"),]
+##no attriters
+df$attrit<-ifelse(df$qwebcontrol==1 & !(df$qdmode %in% c("web","webS")),1,0)
+df<-df[df$attrit==0,]
+##
 ids<-df$hhidpn
 load(file="/home/bd/Dropbox/projects/hrs/web/data/df.Rdata")
 df<-df[df$hhidpn %in% ids,]
@@ -61,6 +65,10 @@ load(file="/home/bd/Dropbox/projects/hrs/web/data/df.Rdata")
 df<-df[df$wave=="Q" & df$qwebcontrol %in% 1:2,]
 df<-df[df$iwtype==1 & df$proxy==5,]
 df<-df[df$qdmode %in% c("tel","web"),]
+##no attriters
+df$attrit<-ifelse(df$qwebcontrol==1 & !(df$qdmode %in% c("web","webS")),1,0)
+df<-df[df$attrit==0,]
+##
 ids<-df$hhidpn #the 2020 ids
 ##
 load(file="/home/bd/Dropbox/projects/hrs/web/data/df.Rdata")

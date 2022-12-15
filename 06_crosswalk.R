@@ -5,6 +5,10 @@ length(unique(df$hhidpn))
 nms<-c("dlrc1", "dlrc2", "dlrc3", "dlrc4", "imrc1", "imrc2", "imrc3", "imrc4", "ser7","d178s", "d179s", "d180s")
 df<-df[df$qdmode %in% c("tel","web"),]
 
+##no attriters
+df$attrit<-ifelse(df$qwebcontrol==1 & !(df$qdmode %in% c("web","webS")),1,0)
+df<-df[df$attrit==0,]
+
 irt<-function(z) {
     library(mirt)
     resp<-z[,nms]
@@ -40,6 +44,7 @@ tmp<-by(z$th,z$cogtot27_imp2018,mean,na.rm=TRUE)
 x2<-data.frame(ss=names(tmp),web=as.numeric(tmp))
 x2$cs.web<-cumsum(table(z$cogtot27_imp2018))/nrow(z)
 x<-merge(x,x2)
+x
 
 pdf("/home/bd/Dropbox/Apps/Overleaf/HRS Module D/crosswalk.pdf",width=7,height=3)
 par(mfrow=c(1,3),mgp=c(2,1,0),mar=c(3,3,1,1),oma=rep(.5,4))
@@ -62,8 +67,8 @@ segments(0,zz,x$ss[xv],zz,col='gray')
 xv<-which(x$ss==12)
 segments(x$ss[xv],0,x$ss[xv],x$cs.web[xv],col='red')
 segments(0,x$cs.web[xv],x$ss[xv],x$cs.web[xv],col='red')
-xv<-which(x$ss==13)
-segments(x$ss[xv],0,x$ss[xv],x$cs.web[xv],col='red',lty=2)
-segments(0,x$cs.web[xv],x$ss[xv],x$cs.web[xv],col='red',lty=2)
+#xv<-which(x$ss==13)
+#segments(x$ss[xv],0,x$ss[xv],x$cs.web[xv],col='red',lty=2)
+#segments(0,x$cs.web[xv],x$ss[xv],x$cs.web[xv],col='red',lty=2)
 dev.off()
 

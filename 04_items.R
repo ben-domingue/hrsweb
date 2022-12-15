@@ -6,10 +6,10 @@ df<-df[df$iwtype==1 & df$proxy==5,]
 nms<-c("dlrc1", "dlrc2", "dlrc3", "dlrc4", "imrc1", "imrc2", "imrc3", "imrc4", "ser7","d178s", "d179s", "d180s")
 df<-df[df$qdmode %in% c("tel","web"),]
 
-## dim(df)
-## load(file="/home/bd/Dropbox/projects/hrs/web/data/wt.Rdata")
-## df<-merge(df,wt)
-## dim(df)
+##no attriters
+df$attrit<-ifelse(df$qwebcontrol==1 & !(df$qdmode %in% c("web","webS")),1,0)
+df<-df[df$attrit==0,]
+##
 
 ######################################################
 ff<-function(df) {
